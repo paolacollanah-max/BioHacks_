@@ -1,0 +1,301 @@
+{% comment %} BIOHACKS — Homepage {% endcomment %}
+
+<!-- ═══════════════════════════
+     HERO
+════════════════════════════ -->
+<section class="hero">
+
+  <!-- Background video (warmed toward the brand palette via overlays) -->
+  <video id="hero-video" class="hero-video" autoplay muted playsinline preload="auto" loop src="{{ 'butterfly-forest.mp4' | asset_url }}"></video>
+  <div class="hero-fallback" aria-hidden="true" style="background-image:url('{{ 'butterfly-poster.jpg' | asset_url }}');"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-greenify" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <h1 class="hero-title">Biohacks</h1>
+    <p class="hero-sub">
+      Herramientas de hogar que protegen tu salud desde la raíz<br>
+      Elimina progresivamente los materiales tóxicos del hogar<br>
+      y reemplázalos por alternativas respaldadas por la ciencia
+    </p>
+    <div class="hero-cta">
+      <a href="/collections/all" class="btn-primary">Explorar Productos</a>
+      <a href="/pages/ciencia" class="btn-secondary">La Ciencia</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Descubrir</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+     MISSION STRIP
+════════════════════════════ -->
+<div class="mission-strip">
+  <div class="mission-item"><span class="mission-icon">🔬</span> Respaldado por la ciencia</div>
+  <div class="mission-item"><span class="mission-icon">🚫</span> Sin tóxicos ni PFAS</div>
+  <div class="mission-item"><span class="mission-icon">🌿</span> Materiales biodegradables</div>
+  <div class="mission-item"><span class="mission-icon">📦</span> Envío sostenible</div>
+</div>
+
+<!-- ═══════════════════════════
+     PRODUCTOS DESTACADOS
+════════════════════════════ -->
+<div class="section">
+  <div class="products-intro">
+    <div>
+      <span class="section-label reveal">Nuestra Colección</span>
+      <h2 class="section-title reveal reveal-delay-1">Reemplaza lo tóxico<br>por lo <em>inteligente</em></h2>
+    </div>
+    <div>
+      <p class="section-desc reveal reveal-delay-2">Cada producto en Biohacks ha sido seleccionado con evidencia científica. Tu hogar es el primer entorno que puedes controlar.</p>
+      <br>
+      <a href="/collections/all" class="btn-secondary reveal reveal-delay-3">Ver toda la colección</a>
+    </div>
+  </div>
+
+  <div class="products-grid">
+    {% if collections.all.products.size > 0 %}
+      {% for product in collections.all.products limit: 6 %}
+      <div class="product-card reveal reveal-delay-{{ forloop.index }}">
+        <div class="product-img">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | img_url: '500x500' }}" alt="{{ product.title | escape }}" loading="lazy">
+          {% else %}
+            <span style="font-size:3rem">🌿</span>
+          {% endif %}
+          {% if product.tags contains 'nuevo' %}
+            <span class="product-badge">Nuevo</span>
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <span class="product-category">{{ product.type | default: 'Biohacks' }}</span>
+          <div class="product-name">{{ product.title }}</div>
+          <p class="product-desc">{{ product.description | strip_html | truncate: 100 }}</p>
+          <div class="product-footer">
+            <span class="product-price">{{ product.price | money }}</span>
+            <form action="/cart/add" method="post">
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="add-to-cart">Añadir</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <!-- Demo cards when no products exist -->
+      <div class="product-card reveal">
+        <div class="product-img"><span>🍳</span></div>
+        <div class="product-info">
+          <span class="product-category">Cocina</span>
+          <div class="product-name">Sartén Acero 316</div>
+          <p class="product-desc">Acero inoxidable quirúrgico. Sin PFAS, sin teflón. Vida útil de décadas.</p>
+          <div class="product-footer">
+            <span class="product-price">€49,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img"><span>🫙</span><span class="product-badge">Top ventas</span></div>
+        <div class="product-info">
+          <span class="product-category">Hidratación</span>
+          <div class="product-name">Botella de Cobre Puro</div>
+          <p class="product-desc">Antimicrobiana certificada por EPA. Elimina E. coli y Salmonella.</p>
+          <div class="product-footer">
+            <span class="product-price">€34,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img"><span>💚</span></div>
+        <div class="product-info">
+          <span class="product-category">Bienestar</span>
+          <div class="product-name">Pulsera de Cobre</div>
+          <p class="product-desc">Absorción transdérmica de cobre biodisponible. Diseño minimalista.</p>
+          <div class="product-footer">
+            <span class="product-price">€19,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img"><span>🫒</span></div>
+        <div class="product-info">
+          <span class="product-category">Cocina</span>
+          <div class="product-name">Set Bols Acero Inox</div>
+          <p class="product-desc">Pack de 3 tamaños. Inerte químicamente. Apto para lavavajillas.</p>
+          <div class="product-footer">
+            <span class="product-price">€39,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img"><span>🪥</span></div>
+        <div class="product-info">
+          <span class="product-category">Hogar</span>
+          <div class="product-name">Cepillo Fibra Natural</div>
+          <p class="product-desc">Elimina microplásticos al fregar. 100% biodegradable en 6 meses.</p>
+          <div class="product-footer">
+            <span class="product-price">€12,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-img"><span>🍱</span></div>
+        <div class="product-info">
+          <span class="product-category">Almacenamiento</span>
+          <div class="product-name">Tuppers Acero Inox</div>
+          <p class="product-desc">Sin BPA ni BPS. Herméticos. La alternativa definitiva al plástico.</p>
+          <div class="product-footer">
+            <span class="product-price">€29,90</span>
+            <button class="add-to-cart">Añadir</button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     SCIENCE SECTION
+════════════════════════════ -->
+<div class="section-full science-section">
+  <div class="science-grid section">
+    <div>
+      <span class="section-label reveal">Evidencia Científica</span>
+      <h2 class="section-title reveal reveal-delay-1">¿Por qué cambiar<br>lo que <em>usas</em> cada día?</h2>
+      <p class="section-desc reveal reveal-delay-2">
+        El concepto de <strong>reducción de carga tóxica del hogar</strong> — toxic burden reduction — sostiene que pequeños cambios en el entorno doméstico tienen un impacto acumulativo significativo en la salud a largo plazo.
+      </p>
+      <br><br>
+      <div class="reveal reveal-delay-3">
+        <div style="margin-bottom:1rem">
+          <span class="section-label">Dato clave</span>
+          <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--text-mid); line-height:1.7">
+            Los humanos ingieren aproximadamente<br>
+            <span class="science-stat">5 gramos</span><br>
+            de plástico por semana — el equivalente<br>a una tarjeta de crédito.
+          </div>
+        </div>
+        <p style="font-size:0.72rem; color:var(--text-light); letter-spacing:0.05em">Universidad de Newcastle, 2019 — encargado por WWF</p>
+      </div>
+    </div>
+    <div class="science-cards">
+      <div class="science-card reveal">
+        <div class="science-card-icon">🍳</div>
+        <div class="science-card-title">Sartenes con teflón</div>
+        <p class="science-card-text">Una sartén antiadherente rallada puede liberar hasta <strong>2,3 millones de micropartículas de plástico</strong> en los alimentos. — Environmental Science & Technology, 2023</p>
+      </div>
+      <div class="science-card reveal reveal-delay-1">
+        <div class="science-card-icon">🫙</div>
+        <div class="science-card-title">Cobre antimicrobiano</div>
+        <p class="science-card-text">La EPA certifica el cobre como el único metal sólido con propiedades antimicrobianas registradas, capaz de eliminar más del <strong>99,9% de bacterias</strong> en menos de 2 horas.</p>
+      </div>
+      <div class="science-card reveal reveal-delay-2">
+        <div class="science-card-icon">🧬</div>
+        <div class="science-card-title">Microplásticos en arterias</div>
+        <p class="science-card-text">Investigadores del <em>New England Journal of Medicine</em> (2024) encontraron microplásticos en placas arteriales, asociándolos con mayor riesgo de infarto y ACV.</p>
+      </div>
+      <div class="science-card reveal reveal-delay-3">
+        <div class="science-card-icon">🛡️</div>
+        <div class="science-card-title">Acero inoxidable 316</div>
+        <p class="science-card-text">La EFSA (Autoridad Europea de Seguridad Alimentaria) clasifica el acero inoxidable quirúrgico como material <strong>seguro para contacto alimentario</strong>, químicamente inerte a altas temperaturas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     TABLA COMPARATIVA
+════════════════════════════ -->
+<div class="section compare-section">
+  <span class="section-label reveal">Comparativa</span>
+  <h2 class="section-title reveal reveal-delay-1">La alternativa <em>inteligente</em><br>para cada rincón del hogar</h2>
+  <table class="compare-table reveal reveal-delay-2">
+    <thead>
+      <tr>
+        <th>Producto plástico / tóxico</th>
+        <th>Alternativa Biohacks</th>
+        <th>Reducción de exposición</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sartenes con teflón (PTFE)</td>
+        <td class="highlight">✦ Sartén Acero Inox 316</td>
+        <td><span class="compare-check">✓</span> Elimina partículas PFAS en cocción</td>
+      </tr>
+      <tr>
+        <td>Esponjas sintéticas de cocina</td>
+        <td class="highlight">✦ Cepillo Fibra Natural</td>
+        <td><span class="compare-check">✓</span> Elimina microplásticos al fregar</td>
+      </tr>
+      <tr>
+        <td>Tuppers y recipientes de plástico</td>
+        <td class="highlight">✦ Bols y Tuppers de Acero</td>
+        <td><span class="compare-check">✓</span> Elimina migración de BPA y BPS</td>
+      </tr>
+      <tr>
+        <td>Botellas de plástico</td>
+        <td class="highlight">✦ Botella de Cobre Puro</td>
+        <td><span class="compare-check">✓</span> Elimina PFAS y microplásticos</td>
+      </tr>
+      <tr>
+        <td>Accesorios de plástico</td>
+        <td class="highlight">✦ Pulsera de Cobre</td>
+        <td><span class="compare-check">✓</span> Aporta cobre biodisponible</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════
+     TESTIMONIOS
+════════════════════════════ -->
+<div class="section-full testimonials-section">
+  <div class="section">
+    <span class="section-label reveal">Testimonios</span>
+    <h2 class="section-title reveal reveal-delay-1">Lo que dice<br>nuestra <em>comunidad</em></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Llevaba años usando sartenes de teflón sin saber los riesgos. Desde que cambié a las de acero de Biohacks me siento más tranquila cocinando para mi familia.</p>
+        <div class="testimonial-author">María G.</div>
+        <div class="testimonial-location">Madrid · Cliente desde 2024</div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">La botella de cobre es increíble. Noté la diferencia en el sabor del agua desde el primer día. Además el diseño es precioso, la llevo a todas partes.</p>
+        <div class="testimonial-author">Carlos M.</div>
+        <div class="testimonial-location">Barcelona · Cliente desde 2024</div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Me encanta que cada producto viene con la evidencia científica que lo respalda. No es marketing vacío, es información real. Mi hogar tóxico-free al 80% en 3 meses.</p>
+        <div class="testimonial-author">Laura P.</div>
+        <div class="testimonial-location">Valencia · Cliente desde 2023</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     MANIFESTO
+════════════════════════════ -->
+<div class="manifesto-section">
+  <p class="manifesto-quote reveal">
+    "El hogar es el primer entorno que puedes controlar.<br>Empieza por lo que tocas y lo que cocinas."
+  </p>
+  <div class="manifesto-author reveal reveal-delay-1">— El enfoque Biohacks</div>
+  <br><br>
+  <a href="/collections/all" class="btn-secondary reveal reveal-delay-2" style="border-color:var(--sage); color:var(--sage-light)">
+    Empieza tu transformación
+  </a>
+</div>

@@ -1,0 +1,36 @@
+{% comment %} BIOHACKS — Collection Page {% endcomment %}
+
+<div style="padding-top:100px; min-height:80vh;">
+  <div class="section">
+    <span class="section-label">Colección</span>
+    <h1 class="section-title">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <p class="section-desc">{{ collection.description }}</p>
+    {% endif %}
+
+    <div class="products-grid" style="margin-top:3rem;">
+      {% for product in collection.products %}
+      <div class="product-card">
+        <div class="product-img">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | img_url: '500x500' }}" alt="{{ product.title | escape }}" loading="lazy">
+          {% else %}
+            <span style="font-size:3rem">🌿</span>
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <span class="product-category">{{ product.type | default: 'Biohacks' }}</span>
+          <div class="product-name">{{ product.title }}</div>
+          <p class="product-desc">{{ product.description | strip_html | truncate: 100 }}</p>
+          <div class="product-footer">
+            <span class="product-price">{{ product.price | money }}</span>
+            <a href="{{ product.url }}" class="add-to-cart">Ver producto</a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+        <p style="color:var(--text-light); font-size:0.9rem; grid-column:1/-1;">No hay productos en esta colección aún.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>

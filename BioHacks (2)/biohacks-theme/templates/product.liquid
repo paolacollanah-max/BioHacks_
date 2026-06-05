@@ -1,0 +1,75 @@
+{% comment %} BIOHACKS — Product Page {% endcomment %}
+
+<div style="padding-top:100px; min-height:80vh;">
+  <div class="section" style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; padding-top:2rem;">
+
+    <!-- Product Images -->
+    <div>
+      {% if product.featured_image %}
+        <div style="background:var(--sage-pale); border-radius:4px; overflow:hidden; aspect-ratio:1; display:flex; align-items:center; justify-content:center;">
+          <img src="{{ product.featured_image | img_url: '800x800' }}" alt="{{ product.title | escape }}" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        {% if product.images.size > 1 %}
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.8rem; margin-top:0.8rem;">
+          {% for image in product.images limit:4 %}
+          <div style="background:var(--sage-pale); border-radius:2px; overflow:hidden; aspect-ratio:1;">
+            <img src="{{ image | img_url: '200x200' }}" alt="{{ product.title }}" style="width:100%; height:100%; object-fit:cover; cursor:pointer; opacity:0.8; transition:opacity 0.3s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% else %}
+        <div style="background:var(--sage-pale); border-radius:4px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:5rem;">🌿</div>
+      {% endif %}
+    </div>
+
+    <!-- Product Info -->
+    <div>
+      <span class="section-label">{{ product.type | default: 'Biohacks' }}</span>
+      <h1 style="font-family:var(--font-display); font-size:2.5rem; font-weight:400; color:var(--forest); line-height:1.2; margin-bottom:1rem;">{{ product.title }}</h1>
+
+      <div style="font-family:var(--font-display); font-size:2rem; color:var(--forest); margin-bottom:2rem;">{{ product.price | money }}</div>
+
+      <div style="font-size:0.9rem; color:var(--text-mid); line-height:1.8; margin-bottom:2rem;">
+        {{ product.description }}
+      </div>
+
+      {% form 'product', product %}
+        {% if product.variants.size > 1 %}
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-mid); display:block; margin-bottom:0.5rem;">Variante</label>
+          <select name="id" style="width:100%; padding:0.8rem 1rem; border:1px solid var(--sage); border-radius:2px; font-family:var(--font-body); font-size:0.9rem; color:var(--text); background:white; appearance:none;">
+            {% for variant in product.variants %}
+              <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                {{ variant.title }} — {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+        {% endif %}
+
+        <button type="submit" class="btn-primary" style="width:100%; padding:1rem; font-size:0.85rem; margin-bottom:1rem;" {% unless product.available %}disabled{% endunless %}>
+          {% if product.available %}Añadir al carrito{% else %}Agotado{% endif %}
+        </button>
+      {% endform %}
+
+      <!-- Trust badges -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(180,210,170,0.4);">
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-light);">
+          <div style="font-size:1.5rem; margin-bottom:0.4rem;">🔬</div>
+          Respaldado por la ciencia
+        </div>
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-light);">
+          <div style="font-size:1.5rem; margin-bottom:0.4rem;">📦</div>
+          Envío sostenible
+        </div>
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-light);">
+          <div style="font-size:1.5rem; margin-bottom:0.4rem;">↩️</div>
+          30 días devolución
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
